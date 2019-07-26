@@ -10,7 +10,14 @@ class Stack {
     this.top = null
   }
   push(item) {
+    // if(this.top === null){
+    //   this.top = new _Node(item, this.top)
+    //   return
+    // }
+    // const node = new _Node(item, this.top)
+    // this.top = node
     this.top = new _Node(item, this.top)
+
   }
   pop() {
     const node = this.top
@@ -20,14 +27,18 @@ class Stack {
 }
 
 function peek(stack) {
-  return stack.top
+  if (stack.top === null) {
+    return null
+  }
+  return stack.top.data
 }
 
 function isEmpty(stack) {
-  if (stack.top === null) {
-    return true
-  }
-  return false
+  return stack.top === null
+  // if (stack.top === null) {
+  //   return true
+  // }
+  // return false
 }
 
 function display(stack) {
@@ -106,35 +117,127 @@ function matchingParantheses(str) {
 }
 
 //Stack has a grouping of values 
-    //
-    //75431
-    //
+//5,2,7
+//1,3,4
+//let a - null
 
+function sort(stack) {
+  let tempStack = new Stack()
+
+  while (stack.top !== null) {
+    let a = stack.pop()
+    while (peek(tempStack) > a && !isEmpty(tempStack)) {
+
+      stack.push(tempStack.pop())
+    }
+    tempStack.push(a)
+  }
+  while (!isEmpty(tempStack)) {
+    stack.push(tempStack.pop())
+  }
+  // return stack
+}
+
+class Queue {
+  constructor() {
+    this.first = null
+    this.last = null
+  }
+  enqueue(item) {
+    const node = new _Node(item)
+    if (this.first === null) {
+      this.first = node;
+    }
+    if (this.last) {
+      this.last.next = node;
+    }
+    this.last = node;
+    node.next = null
+  }
+  dequeue() {
+    if (this.first === null) {
+      return;
+    }
+    const node = this.first;
+    this.first = this.first.next;
+
+    if (node === this.last) {
+      this.last = null;
+    }
+    return node.value;
+  }
+}
+
+function displayQueue(queue) {
+  let currentNode = queue.first;
+  while (currentNode.next !== null) {
+    console.log(currentNode.data);
+    currentNode = currentNode.next;
+  }
+}
+
+function peekQ(queue){
+  if (queue.first === null) {
+    return null
+  }
+  return queue.first.data
+}
+
+function isEmptyQ(queue){
+  return queue.start === null
+}
 
 function main() {
-  starTrek = new Stack()
-  emptyStack = new Stack()
-  starTrek.push('Kirk')
-  starTrek.push('Spock')
-  starTrek.push('McCoy')
-  starTrek.push('Scotty')
+  // starTrek = new Stack()
+  // emptyStack = new Stack()
+  // starTrek.push('Kirk')
+  // starTrek.push('Spock')
+  // starTrek.push('McCoy')
+  // starTrek.push('Scotty')
 
-  // console.log(starTrek)
-  // peek(starTrek)
+  // // // console.log(starTrek)
+  // // // peek(starTrek)
 
-  // console.log(isEmpty(starTrek))
-  // console.log(isEmpty(emptyStack))
-  // display(starTrek)
-  // console.log('')
+  // // // console.log(isEmpty(starTrek))
+  // // // console.log(isEmpty(emptyStack))
+  // // // display(starTrek)
+  // // // console.log('')
 
-  // starTrek.pop()
-  // starTrek.pop()
-  // display(starTrek)
+  // // // starTrek.pop()
+  // // // starTrek.pop()
+  // // // display(starTrek)
 
-  // console.log(is_palindrome('dad'))
-  // console.log(is_palindrome('Hello'))
+  // // // console.log(is_palindrome('dad'))
+  // // // console.log(is_palindrome('Hello'))
 
-  console.log(matchingParantheses(`("'")`))
+  // // console.log(matchingParantheses(`("'")`))
+
+  // unsorted = new Stack()
+  // unsorted.push(7)
+  // unsorted.push(2)
+  // unsorted.push(4)
+  // unsorted.push(3)
+  // unsorted.push(6)
+  // unsorted.push(1)
+  // console.log(unsorted)
+  // sort(unsorted)
+  // display(unsorted)
+
+  starTrekQ = new Queue()
+  starTrekQ.enqueue('Kirk')
+  starTrekQ.enqueue('Spock')
+  starTrekQ.enqueue('Uhura')
+  starTrekQ.enqueue('Sulu')
+  starTrekQ.enqueue('Checkov')
+  console.log(starTrekQ.last)
+  displayQueue(starTrekQ)
+  console.log('')
+  console.log(peekQ(starTrekQ))
+  console.log(isEmptyQ(starTrekQ))
+  starTrekQ.dequeue()
+  starTrekQ.dequeue()
+  displayQueue(starTrekQ)
+
 }
 
 
