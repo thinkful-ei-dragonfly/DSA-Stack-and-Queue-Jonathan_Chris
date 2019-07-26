@@ -48,6 +48,7 @@ function display(stack) {
     currentNode = currentNode.next;
   }
 }
+
 //sample input: 'dad'
 //sampule output: true
 
@@ -150,8 +151,10 @@ class Queue {
     }
     if (this.last) {
       this.last.next = node;
+
     }
     this.last = node;
+    
     node.next = null
   }
   dequeue() {
@@ -170,22 +173,110 @@ class Queue {
 
 function displayQueue(queue) {
   let currentNode = queue.first;
-  while (currentNode.next !== null) {
+  while (currentNode !== null) {
     console.log(currentNode.data);
     currentNode = currentNode.next;
   }
 }
 
-function peekQ(queue){
+function peekQ(queue) {
   if (queue.first === null) {
     return null
   }
   return queue.first.data
 }
 
-function isEmptyQ(queue){
+function isEmptyQ(queue) {
   return queue.start === null
 }
+
+class DoubleQueue {
+  constructor() {
+    this.first = null
+    this.last = null
+  }
+
+  enqueueDouble(item) {
+    const node = new _DoubleNode(item, null, this.last)
+    if (this.first === null) {
+      this.first = node;
+      node.prev = null;
+    }
+    if (this.last) {
+      this.last.next = node;
+    }
+    this.last = node;
+    
+    node.next = null
+  }
+
+  dequeueDouble() {
+    if (this.first === null) {
+      return;
+    }
+    const node = this.first; 
+    this.first = this.first.next; 
+    this.first.prev = null;
+  
+    if (node === this.last) {
+      this.last = null;
+    }
+    return node.value;
+  }
+}
+
+class _DoubleNode {
+  constructor(data, next, prev) {
+    this.data = data
+    this.next = next
+    this.prev = prev
+  }
+}
+
+class queueWithStack {
+  constructor() {
+    this.firstStack = new Stack();
+    this.reverseStack = new Stack();
+  }
+
+  enqueue(item) {
+    // if(this.top === null){
+    //   this.top = new _Node(item, this.top)
+    //   return
+    // }
+    // const node = new _Node(item, this.top)
+    // this.top = node
+    this.firstStack.push(item);
+  }
+
+  dequeue() {
+    let currentNode = this.firstStack.top//Sulu
+    while (currentNode !== null) {//true
+      // console.log(currentNode)
+      currentNode = currentNode.next
+      this.reverseStack.push(this.firstStack.pop())//push Sulu to TEMP: ['Sulu', 'Uhura', 'Spock', 'Kirk']
+    }
+    let popped = this.reverseStack.pop()//Removes Kirk from temp
+    // console.log(display(temp))
+    while (!isEmpty(this.reverseStack)) {//true
+      this.enqueue(this.reverseStack.pop())// ['Spock', 'Uhura', 'Sulu']
+    }
+    return popped;
+  }
+}
+
+function displayQueueStack(stack) {
+  while (stack.firstStack.top !== null) {
+    console.log(stack.firstStack.top.data);
+    stack.firstStack.pop();
+  }
+}
+
+
+
+
+
+
 
 function main() {
   // starTrek = new Stack()
@@ -224,20 +315,34 @@ function main() {
   // display(unsorted)
 
   starTrekQ = new Queue()
-  starTrekQ.enqueue('Kirk')
-  starTrekQ.enqueue('Spock')
-  starTrekQ.enqueue('Uhura')
-  starTrekQ.enqueue('Sulu')
-  starTrekQ.enqueue('Checkov')
-  console.log(starTrekQ.last)
-  displayQueue(starTrekQ)
-  console.log('')
-  console.log(peekQ(starTrekQ))
-  console.log(isEmptyQ(starTrekQ))
-  starTrekQ.dequeue()
-  starTrekQ.dequeue()
-  displayQueue(starTrekQ)
-
+  // starTrekQ.enqueue('Kirk')
+  // starTrekQ.enqueue('Spock')
+  // starTrekQ.enqueue('Uhura')
+  // starTrekQ.enqueue('Sulu')
+  // starTrekQ.enqueue('Checkov')
+  // console.log(starTrekQ.last)
+  // displayQueue(starTrekQ)
+  // console.log('')
+  // console.log(peekQ(starTrekQ))
+  // console.log(isEmptyQ(starTrekQ))
+  // starTrekQ.dequeue()
+  // starTrekQ.dequeue()
+  // displayQueue(starTrekQ)
+  // starTrekDouble = new DoubleQueue()
+  // starTrekDouble.enqueueDouble('Kirk')
+  // starTrekDouble.enqueueDouble('Spock')
+  // starTrekDouble.enqueueDouble('Uhura')
+  // starTrekDouble.enqueueDouble('Sulu')
+  // starTrekDouble.enqueueDouble('Checkov')
+  // displayQueue(starTrekDouble);
+  // console.log(starTrekDouble.first)
+  starTrekStackQueue = new queueWithStack()
+  starTrekStackQueue.enqueue('Kirk')
+  starTrekStackQueue.enqueue('Spock')
+  starTrekStackQueue.enqueue('Uhura')
+  starTrekStackQueue.enqueue('Sulu')
+  starTrekStackQueue.dequeue()
+  displayQueueStack(starTrekStackQueue)
 }
 
 
